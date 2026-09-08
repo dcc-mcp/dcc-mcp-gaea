@@ -10,10 +10,10 @@
       "profiles": ["preview"],
       "regions": ["beach"],
       "output_directory": "C:/YOUR_ISOLATED_PROJECT/output",
-      "terrain_extent_m": [1000, 1000, 200],
+      "terrain_extent_m": [1008, 1008, 64],
       "outputs": [
-        {"file": "height.png", "role": "height", "size": [1024, 1024]},
-        {"file": "sand.png", "role": "weight", "size": [1024, 1024]}
+        {"file": "height.png", "role": "height", "size": [1009, 1009]},
+        {"file": "sand.png", "role": "weight", "size": [1009, 1009]}
       ]
     }
   }
