@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "swarm_executable": "C:/YOUR_GAEA_INSTALL/Gaea.Swarm.exe",
+  "swarm_sha256": "REPLACE_WITH_EXECUTABLE_SHA256",
+  "templates": {
+    "coast-preview": {
+      "terrain": "C:/YOUR_ISOLATED_PROJECT/coast.terrain",
+      "sha256": "REPLACE_WITH_AUDITED_TERRAIN_SHA256",
+      "variables": {"erosion": {"minimum": 0.0, "maximum": 1.0}},
+      "profiles": ["preview"],
+      "regions": ["beach"],
+      "output_directory": "C:/YOUR_ISOLATED_PROJECT/output",
+      "terrain_extent_m": [1000, 1000, 200],
+      "outputs": [
+        {"file": "height.png", "role": "height", "size": [1024, 1024]},
+        {"file": "sand.png", "role": "weight", "size": [1024, 1024]}
+      ]
+    }
+  }
+}

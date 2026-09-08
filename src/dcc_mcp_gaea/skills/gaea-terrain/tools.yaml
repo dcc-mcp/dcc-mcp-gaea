@@ -1,0 +1,196 @@
+{
+  "tools": [
+    {
+      "name": "inspect_templates",
+      "description": "inspect templates using the audited Gaea template contract",
+      "source_file": "scripts/inspect_templates.py",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "execution": "sync",
+      "job_strategy": "monolithic",
+      "affinity": "any",
+      "enforce_thread_affinity": true,
+      "annotations": {
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      }
+    },
+    {
+      "name": "plan_build",
+      "description": "plan build using the audited Gaea template contract",
+      "source_file": "scripts/plan_build.py",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Exposed numeric variables from template allowlist"
+          },
+          "seed": {
+            "type": "integer",
+            "default": 0
+          },
+          "profile": {
+            "type": "string",
+            "default": ""
+          },
+          "region": {
+            "type": "string",
+            "default": ""
+          },
+          "ignore_cache": {
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "required": [
+          "template_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "execution": "sync",
+      "job_strategy": "monolithic",
+      "affinity": "any",
+      "enforce_thread_affinity": true,
+      "annotations": {
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      }
+    },
+    {
+      "name": "build_terrain",
+      "description": "build terrain using the audited Gaea template contract",
+      "source_file": "scripts/build_terrain.py",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Exposed numeric variables from template allowlist"
+          },
+          "seed": {
+            "type": "integer",
+            "default": 0
+          },
+          "profile": {
+            "type": "string",
+            "default": ""
+          },
+          "region": {
+            "type": "string",
+            "default": ""
+          },
+          "ignore_cache": {
+            "type": "boolean",
+            "default": true
+          },
+          "timeout_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3600,
+            "default": 600
+          }
+        },
+        "required": [
+          "template_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "execution": "async",
+      "job_strategy": "monolithic",
+      "affinity": "any",
+      "enforce_thread_affinity": true,
+      "annotations": {
+        "read_only_hint": false,
+        "destructive_hint": true,
+        "idempotent_hint": false,
+        "open_world_hint": false
+      }
+    },
+    {
+      "name": "verify_outputs",
+      "description": "verify outputs using the audited Gaea template contract",
+      "source_file": "scripts/verify_outputs.py",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "template_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "template_id"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "success"
+        ]
+      },
+      "execution": "sync",
+      "job_strategy": "monolithic",
+      "affinity": "any",
+      "enforce_thread_affinity": true,
+      "annotations": {
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": true,
+        "open_world_hint": false
+      }
+    }
+  ]
+}
