@@ -4,9 +4,9 @@ Typed Gaea Build Swarm integration for DCC-MCP. Initial implementation; **real G
 
 ## Scope
 
-Four tools inspect operator-registered templates, plan supported CLI arguments, execute a bounded build, and verify exported height/weight images with dimensions and SHA-256 receipts. Builds use Core deferred jobs rather than a second job database. The service is standalone; it does not attach to an unrelated Gaea GUI process.
+Six tools inspect operator-registered templates, plan supported CLI arguments, execute a bounded build, and verify exported height/weight images with dimensions and SHA-256 receipts. Builds use Core deferred jobs rather than a second job database. The service is standalone; it does not attach to an unrelated Gaea GUI process.
 
-Supported overrides: exposed **numeric** variables with declared bounds, mutation seed, configured profile, configured region, and cache bypass. No arbitrary shell commands, activation, private graph edits, downloads or purchases are exposed.
+Supported overrides: exposed **numeric** variables with declared bounds, mutation seed, configured profile, configured region, and cache bypass. No arbitrary shell commands, activation, arbitrary graph edits, downloads or purchases are exposed.
 
 ## Configure and run
 
@@ -16,7 +16,7 @@ Run `dcc-mcp-gaea`, then discover `gaea-terrain` through `dcc-mcp-cli search`. L
 
 Outputs must be absent before execution. This avoids overwriting or accepting stale files. Interrupted builds can leave partial outputs; reconcile those manually. A stale lock after process loss also requires operator reconciliation.
 
-Installed Swarm 2.2.9.0 and 2.3.0.1 advertise `--buildpath`, `--resolution` and `--silent` in their own help. After verifying the exact executable, the operator can enable the corresponding booleans in configuration `native_cli`. The adapter then supplies the configured output directory and optional per-template integer `resolution`; it never rewrites the graph. Older configurations retain their previous argument list. Output resolution is verified after the build, not assumed supported merely because the CLI accepted a number.
+Installed Swarm 2.2.9.0 and 2.3.0.1 advertise `--buildpath`, `--resolution` and `--silent` in their own help. After verifying the exact executable, the operator can enable the corresponding booleans in configuration `native_cli`. The adapter then supplies the configured output directory and optional per-template integer `resolution`; the build planner never rewrites the graph. Older configurations retain their previous argument list. Output resolution is verified after the build, not assumed supported merely because the CLI accepted a number.
 
 ## Unreal handoff
 
@@ -38,3 +38,13 @@ Native probes found that bundled example graphs may have no nodes marked for exp
 - [Gaea2Unreal](https://docs.gaea.app/guides/use-in/bridges/gaea2unreal/index.html)
 
 Gaea is a QuadSpinner product. This independent adapter does not bundle Gaea, its license or vendor artwork.
+
+## Native graph file bridge
+
+`inspect_graph(template_id)` reads native Open Terrain Format terrain/node records, scalar parameters and ports. `prepare_graph(template_id, terrain_id, node_id, parameters, output_name)` writes a new graph copy and verifies JSON readback and SHA-256. Existing unknown fields and CLR type labels are preserved as data; no CLR types are loaded. Only existing numeric fields explicitly authorized in operator configuration can change. The output filename cannot contain directories and existing files are never overwritten.
+
+Each template may configure `prepared_directory` (an existing directory) and `graph_parameters`, indexed by terrain ID, node ID, then parameter name with `minimum`/`maximum` bounds. Inspect the graph first to obtain actual IDs; do not invent node schemas. Prepared files require engine validation and explicit registration before builds. `engine_validated: false` is intentional: JSON readback does not prove Gaea accepts or evaluates the graph.
+
+A local Gaea 2.2.9.0 bundled snow graph was read (six nodes), its existing Mountain Seed changed in a separate copy, and every other JSON field preserved. This proves native file-contract operation, not engine output. The installed application targets .NET 8/WPF; internal Engine/Nodes/Server DLL names are not a documented public plugin API. No in-process SDK or hook is claimed.
+
+Community Edition supports free non-commercial work and exports up to 1024 squared according to the [official download page](https://www.quadspinner.com/Download). The [vendor forum clarification](https://talk.gaea.app/t/gaea-3-cli-headless-automation-what-should-third-party-tooling-plan-for/1883) allows Open Terrain Format preparation across license levels, while headless Swarm automation requires Professional or Enterprise. Use graph preparation and output verification with a locally performed build when automation is not licensed. The adapter does not activate, unlock, or infer entitlement from an editor label. Current host evidence is not proof of Community build acceptance.
