@@ -14,7 +14,9 @@ Install this package in a project environment, then set `DCC_MCP_GAEA_CONFIG` to
 
 Run `dcc-mcp-gaea`, then discover `gaea-terrain` through `dcc-mcp-cli search`. Load the skill, inspect templates, plan the command, and invoke `build_terrain`. Use the shared Core job status/cancellation interface. No port or GUI PID is hardcoded.
 
-Outputs must be absent before execution. This avoids overwriting or accepting stale files. Repeated runs need a separately audited template/output directory; the adapter does not invent an undocumented output-directory switch or rewrite terrain graphs. Interrupted builds can leave partial outputs; reconcile those manually. A stale lock after process loss also requires operator reconciliation.
+Outputs must be absent before execution. This avoids overwriting or accepting stale files. Interrupted builds can leave partial outputs; reconcile those manually. A stale lock after process loss also requires operator reconciliation.
+
+Installed Swarm 2.2.9.0 and 2.3.0.1 advertise `--buildpath`, `--resolution` and `--silent` in their own help. After verifying the exact executable, the operator can enable the corresponding booleans in configuration `native_cli`. The adapter then supplies the configured output directory and optional per-template integer `resolution`; it never rewrites the graph. Older configurations retain their previous argument list. Output resolution is verified after the build, not assumed supported merely because the CLI accepted a number.
 
 ## Unreal handoff
 
@@ -25,6 +27,8 @@ Use the verified heightmap, weightmap receipts and configured physical extents w
 Run `python -m pytest` and `ruff check src tests`. Tests use synthetic image fixtures and mocked child processes. Core schema validation and server construction use the actual public Core package. They do not prove license availability, host CLI compatibility, terrain quality, actual gateway cancellation propagation, or UE integration.
 
 Cancellation/timeout terminates and waits for the directly owned Swarm process. Whether Swarm worker descendants survive cancellation needs real-host validation; do not claim full process-tree cancellation. Large-world tiled builds, arbitrary graph authoring, automatic metadata extraction and direct UE import are follow-up work. Core remains unchanged.
+
+Native probes found that bundled example graphs may have no nodes marked for export. Swarm 2.2.9.0 reports this clearly in a real console, but its no-console error path can instead fail with an invalid-handle exception. `--silent` did not suppress that console-dependent error prompt. Configure export nodes in Gaea before automation; neither a zero exit code nor an empty output directory counts as a successful build. Licensed production builds remain an outstanding acceptance gate.
 
 ## Official contracts
 

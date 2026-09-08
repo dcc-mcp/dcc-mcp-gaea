@@ -75,6 +75,20 @@ def plan_build(
         "--seed",
         str(seed),
     ]
+    # Enable only after checking the installed Swarm's own --help output.
+    # These switches are available in 2.3.0.1 but absent in older web docs.
+    native_cli = config.get("native_cli", {})
+    if native_cli.get("buildpath") is True:
+        command.extend(["--buildpath", str(Path(entry["output_directory"]).resolve())])
+    if native_cli.get("silent") is True:
+        command.append("--silent")
+    if "resolution" in entry:
+        resolution = entry["resolution"]
+        if native_cli.get("resolution") is not True:
+            raise ValueError("Resolution override is not verified for this Swarm")
+        if type(resolution) is not int or not 16 <= resolution <= 65536:
+            raise ValueError("Resolution must be an integer from 16 to 65536")
+        command.extend(["--resolution", str(resolution)])
     for selection, allowed, flag in (
         (profile, "profiles", "--profile"),
         (region, "regions", "--region"),

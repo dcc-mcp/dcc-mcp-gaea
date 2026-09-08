@@ -50,6 +50,34 @@ def test_command_is_argv_and_variables_last(configured):
     assert "--profile" in result["command"]
 
 
+def test_verified_native_cli_switches_precede_variables(configured):
+    config, path, output = configured
+    config["native_cli"] = {"buildpath": True, "silent": True, "resolution": True}
+    config["templates"]["coast"]["resolution"] = 1009
+    path.write_text(json.dumps(config))
+    command = terrain.plan_build("coast", {"erosion": 0.5})["command"]
+    assert command[command.index("--buildpath") + 1] == str(output.resolve())
+    assert command[command.index("--resolution") + 1] == "1009"
+    assert "--silent" in command
+    assert command[-2:] == ["-v", "erosion=0.5"]
+
+
+def test_resolution_requires_verified_native_switch(configured):
+    config, path, _ = configured
+    config["templates"]["coast"]["resolution"] = 1009
+    path.write_text(json.dumps(config))
+    with pytest.raises(ValueError, match="not verified"):
+        terrain.plan_build("coast")
+
+
+def test_zero_exit_without_outputs_is_not_success(configured, monkeypatch):
+    process = Mock(returncode=0)
+    process.poll.return_value = 0
+    monkeypatch.setattr(terrain.subprocess, "Popen", Mock(return_value=process))
+    with pytest.raises(ValueError, match="Expected output missing"):
+        terrain.build_terrain("coast")
+
+
 @pytest.mark.parametrize(
     "arguments",
     [
