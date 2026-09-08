@@ -6,16 +6,29 @@ import urllib.request
 from dcc_mcp_core import MinimalModeConfig
 
 from dcc_mcp_gaea.server import GaeaMcpServer
+from dcc_mcp_gaea.terrain import digest
 
 
 def test_http_discovery_and_typed_inspection(tmp_path, monkeypatch):
+    source = tmp_path / "test.terrain"
+    source.write_text(
+        json.dumps(
+            {
+                "Assets": {
+                    "$values": [{"Terrain": {"Id": "t", "Nodes": {"1": {"Seed": 3}}}}]
+                }
+            }
+        )
+    )
     config = tmp_path / "config.json"
     config.write_text(
         json.dumps(
             {
                 "schema_version": 1,
                 "swarm_executable": str(tmp_path / "missing.exe"),
-                "templates": {},
+                "templates": {
+                    "test": {"terrain": str(source), "sha256": digest(source)}
+                },
             }
         )
     )
@@ -72,5 +85,22 @@ def test_http_discovery_and_typed_inspection(tmp_path, monkeypatch):
         )
         assert payload["context"]["runtime_available"] is False
         assert payload["context"]["license_status"] == "not_verified"
+        graph_result = request(
+            "tools/call",
+            {"name": "inspect_graph", "arguments": {"template_id": "test"}},
+        )
+        assert not graph_result.get("isError"), graph_result
+        graph_payload = json.loads(
+            next(
+                item["text"]
+                for item in graph_result["content"]
+                if item["type"] == "text"
+            )
+        )
+        assert (
+            graph_payload["context"]["terrains"][0]["nodes"][0]["parameters"]["Seed"]
+            == 3
+        )
+        assert graph_payload["context"]["engine_validated"] is False
     finally:
         server.stop()
