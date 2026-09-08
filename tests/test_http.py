@@ -59,6 +59,8 @@ def test_http_discovery_and_typed_inspection(tmp_path, monkeypatch):
             params = {"cursor": page["nextCursor"]}
         assert {
             "inspect_templates",
+            "inspect_graph",
+            "prepare_graph",
             "plan_build",
             "build_terrain",
             "verify_outputs",
