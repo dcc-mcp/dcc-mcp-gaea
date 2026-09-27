@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "dcc-mcp-gaea"
-version = "0.1.0"
+version = "0.1.1"
 description = "Typed Gaea Build Swarm adapter for DCC-MCP"
 requires-python = ">=3.7"
 dependencies = ["dcc-mcp-core>=0.20.23", "Pillow>=9"]
