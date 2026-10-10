@@ -2,6 +2,26 @@
 
 Typed Gaea Build Swarm integration for DCC-MCP. Initial implementation; **real Gaea builds and Unreal imports have not yet been validated**.
 
+<!-- dcc-mcp-coverage-pointer:start -->
+<!-- Generated from dcc-mcp-catalog.yml by scripts/generate_adapter_pointer.py in dcc-mcp/dcc-mcp-core. Do not edit by hand. -->
+## Part of the DCC-MCP host matrix
+
+**dcc-mcp-gaea** — Gaea Build Swarm adapter for DCC-MCP — plan terrain builds and verify
+height and weight-map outputs; real Gaea builds remain unvalidated.
+
+It is one of **47 host adapters** in the DCC-MCP catalog. Every adapter speaks the same
+MCP protocol and builds on the same core runtime contract; each one exposes the tools
+its own host needs on top of that.
+
+- [All host adapters and install metadata](https://dcc-mcp.github.io/ecosystem)
+- [Host matrix on the core README](https://github.com/dcc-mcp/dcc-mcp-core#readme)
+- [Showcase](https://dcc-mcp.github.io/showcase)
+
+This block is generated from the catalog entry in
+[`dcc-mcp-catalog.yml`](https://github.com/dcc-mcp/dcc-mcp-core/blob/main/dcc-mcp-catalog.yml).
+Re-run the generator after changing the catalog.
+<!-- dcc-mcp-coverage-pointer:end -->
+
 ## Scope
 
 Six tools inspect operator-registered templates, plan supported CLI arguments, execute a bounded build, and verify exported height/weight images with dimensions and SHA-256 receipts. Builds use Core deferred jobs rather than a second job database. The service is standalone; it does not attach to an unrelated Gaea GUI process.
