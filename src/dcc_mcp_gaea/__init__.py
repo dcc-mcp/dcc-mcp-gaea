@@ -1,3 +1,3 @@
 """Gaea adapter. Importing this package does not launch or activate Gaea."""
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
