@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/dcc-mcp/dcc-mcp-gaea/compare/v0.1.2...v0.1.3) (2026-11-28)
+
+
+### Documentation
+
+* refresh the generated DCC-MCP host matrix pointer ([89c0a77](https://github.com/dcc-mcp/dcc-mcp-gaea/commit/89c0a775df4a5236885e7b864bf40b1aff93200e))
+* refresh the generated DCC-MCP host matrix pointer ([9a5465f](https://github.com/dcc-mcp/dcc-mcp-gaea/commit/9a5465f902cab96b928022ccc9ce7eda7b34d4e3))
+
 ## [0.1.2](https://github.com/dcc-mcp/dcc-mcp-gaea/compare/v0.1.1...v0.1.2) (2026-10-16)
 
 
